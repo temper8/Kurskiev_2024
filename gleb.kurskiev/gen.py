@@ -59,6 +59,8 @@ def make_exp_file(shot, time, options, shot_fname):
 
 df = pd.read_csv('shots_db.csv')
 df = df.rename(columns={"shot#": "shot", 'Ip': 'IPL', "Bt": "BTOR",'a':'ABC', 'R':'RTOR', 'tria': 'TRICH', 'elon': 'ELONM'})  
+df['ABC']  = df['ABC'].map(lambda x: round(x/100,5))
+df['RTOR'] = df['RTOR'].map(lambda x: round(x/100,5))
 
 #for indx in range(0,20):
 for indx, row in df.iterrows():
