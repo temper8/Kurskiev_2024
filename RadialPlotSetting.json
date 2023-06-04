@@ -1,0 +1,23 @@
+{
+  "shape": "2x2",
+  "title": "Astra radial data",
+  "plots": {
+    "ax1": [
+      "Johm",
+      "jtot"
+    ],
+    "ax2": [
+      "Ti",
+      "Rout"
+    ],
+    "ax3": [
+      "Poh",
+      "LTE",
+      "MU"
+    ],
+    "ax4": [
+      "Ti",
+      "Ni"
+    ]
+  }
+}
