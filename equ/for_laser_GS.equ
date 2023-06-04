@@ -9,6 +9,10 @@ TSCALE = 0.05;
 
 
 NEOCL4:;
+
+!! ======= out code
+debug:0.01:0.12::;
+
 !==========NEUT============
 NEUT:;
 NNCL=0.001;
@@ -73,6 +77,9 @@ NEQUIL = 41;
 !!========OUTPUT========================
 
 	Radial output
+J\CU\-1;    Jlh\CULH\-1;       Johm\CUOHM\8; 
+En\CAR24;   E\UPL/(RTOR+AMETR)/GP2;       
+Plh\PELH;   Poh\POH\-2;
 
 Te\TE\\TEX\2;	    Q\1/MU;        RgNe\CAR3;                  CS\CS;
 Ne\NE\\NEX\10;      jtot\CU;       Rin\RTOR+SHIF-AMETR\-5;     LNE\LNE;
@@ -80,9 +87,9 @@ Ti\TI\\TIX\2;	    RHO\RHO\1;     RgT\CAR2;                   SHEA\SHEAR;
 Ni\NI\\NEX\10;      FP\FP; 	   Rout\RTOR+SHIF+AMETR\-5;     LTE\LTE;
 
 bete\BETE;	MU\MU; 	VOL\VOLUM ;  BTOR\BTOR;
-NUEE\NUEE;	\;	        NUES\NUES;  VR\VR;
-VR\CAR4;	Lr\RLS;	\;  \;	
-NUE\NUE;	\;		\;  \;
+NUEE\NUEE;	NUES\NUES;  VR\VR;
+VR\CAR4;	Lr\RLS;		
+NUE\NUE;	
 
 
 
@@ -123,5 +130,7 @@ Wtot_WEB*1000+WIB*1000;
 q95_1/MU(ABC*0.95);
 
 !qB_1/MUB_5;
+
+
 
 
