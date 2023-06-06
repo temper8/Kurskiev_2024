@@ -62,13 +62,15 @@ df = df.rename(columns={"shot#": "shot", 'Ip': 'IPL', "Bt": "BTOR",'a':'ABC', 'R
 df['ABC']  = df['ABC'].map(lambda x: round(x/100,5))
 df['RTOR'] = df['RTOR'].map(lambda x: round(x/100,5))
 
+
 #for indx in range(0,20):
 for indx, row in df.iterrows():
-    if indx > 5: break
+    if indx > 1: break
     opt = default_options()
     for key, v in opt.items():
         if key in row:
             opt[key] = row[key]
-    make_exp_file(int(row['shot']), round(row['time'],5), opt, row['fname'])
-    #time = db['time'][indx] 
-    #print(time, round(time, 5))
+    #make_exp_file(int(row['shot']), round(row['time'],5), opt, row['fname'])
+    time = row['time']
+    print(time, round(time, 5))
+    print(int(time*10000))

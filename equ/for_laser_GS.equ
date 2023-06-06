@@ -8,10 +8,10 @@ TINIT = 0.025;
 TSCALE = 0.05;
 
 
-NEOCL4:;
+!NEOCL4:;
 
 !! ======= out code
-debug:0.01:0.12::;
+debug:TSCALE:TSTART::;
 
 !==========NEUT============
 NEUT:;
@@ -58,8 +58,8 @@ CAR1="work(j,165)";
  
 
 
-PE=PJOUL-PEIZ;!-PRADX;
-PI=PEIZ+PINEU;
+!PE=PJOUL-PEIZ;!-PRADX;
+!PI=PEIZ+PINEU;
 
 
 !!========Current Density===========
@@ -95,7 +95,7 @@ NUE\NUE;
 
 
 
-==============================================
+!!==============================================
 
 
 
@@ -130,6 +130,10 @@ Wtot_WEB*1000+WIB*1000;
 q95_1/MU(ABC*0.95);
 
 !qB_1/MUB_5;
+
+
+
+
 
 
 
