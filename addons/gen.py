@@ -20,20 +20,22 @@ def default_options():
     'ZMJ'   : 1
 }
 def read_shot(p):
-    sh = pd.read_csv(p,delim_whitespace=True, header=None, names= ['x', 'Te', 'Ne'] )
-    x = " ".join([f'{i:<8.4f}' for i in sh['x']])
-    Te = " ".join([f'{i/1000:<8.4f}' for i in sh['Te']])
-    Ne = " ".join([f'{i/1e19:<8.4f}' for i in sh['Ne']])
+    shot = pd.read_csv(p,delim_whitespace=True, header=None, names= ['x', 'Te', 'Ne'] )
+    N = shot.shape[0]
+
+    x = " ".join([f'{i:<8.4f}' for i in shot['x']])
+    Te = " ".join([f'{i/1000:<8.4f}' for i in shot['Te']])
+    Ne = " ".join([f'{i/1e19:<8.4f}' for i in shot['Ne']])
     lines = ['']
     lines.append('!*************** Te **********************************')
-    lines.append('NAMEXP TEX POINTS 10 GRIDTYPE 19')
+    lines.append(f'NAMEXP TEX POINTS {N} GRIDTYPE 19')
     lines.append('0.0')
     lines.append(x)
     lines.append(Te)
 
     lines.append(f'')
     lines.append('!*************** ne  **********************************')
-    lines.append('NAMEXP NEX POINTS 10 GRIDTYPE 19 FACTOR 1')
+    lines.append(f'NAMEXP NEX POINTS {N} GRIDTYPE 19 FACTOR 1')
     lines.append('0.0')
     lines.append(x)
     lines.append(Ne)
@@ -52,7 +54,7 @@ def make_exp_file(shot, time, options, shot_fname):
     if shot_path.exists():
         lines += read_shot(shot_path)
 
-    fn = f'exp\{shot}_{int(time*10000)}.exp'
+    fn = f'exp\{shot}_{time*10000:4.0f}.exp'
     with open(fn, 'w') as f:
         f.writelines(f'{s}\n' for s in lines)
     
@@ -65,12 +67,9 @@ df['RTOR'] = df['RTOR'].map(lambda x: round(x/100,5))
 
 #for indx in range(0,20):
 for indx, row in df.iterrows():
-    if indx > 1: break
+    if indx > 10: break
     opt = default_options()
     for key, v in opt.items():
         if key in row:
             opt[key] = row[key]
-    #make_exp_file(int(row['shot']), round(row['time'],5), opt, row['fname'])
-    time = row['time']
-    print(time, round(time, 5))
-    print(int(time*10000))
+    make_exp_file(int(row['shot']), round(row['time'],5), opt, row['fname'])
