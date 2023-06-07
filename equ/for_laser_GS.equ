@@ -53,7 +53,9 @@ TEB=0.03;
 TI:AS;
 TI = TE;
 TIB = 0.03;
-!CAR1="work(j,165)";
+CAR1="work(j,165)";
+
+ 
 
 
 PE=PJOUL-PEIZ;!-PRADX;
@@ -79,7 +81,7 @@ J\CU\-1;    Jlh\CULH\-1;       Johm\CUOHM\8;
 En\CAR24;   E\UPL/(RTOR+AMETR)/GP2;       
 Plh\PELH;   Poh\POH\-2;
 
-Te\TE\\TEX\2;	    Q\1/MU;        RgNe\CAR3;                  CS\CS;
+Te\TE\\TEX\2;	    Q\1/MU;        RgNe\CAR3;                 
 Ne\NE\\NEX\10;      jtot\CU;       Rin\RTOR+SHIF-AMETR\-5;     LNE\LNE;
 Ti\TI\\TIX\2;	    RHO\RHO\1;     RgT\CAR2;                   SHEA\SHEAR;
 Ni\NI\\NEX\10;      FP\FP; 	   Rout\RTOR+SHIF+AMETR\-5;     LTE\LTE;
@@ -128,6 +130,7 @@ Wtot_WEB*1000+WIB*1000;
 q95_1/MU(ABC*0.95);
 
 !qB_1/MUB_5;
+
 
 
 
