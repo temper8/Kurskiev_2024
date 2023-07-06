@@ -14,6 +14,8 @@ IPL              0.352
 UPDWN            0
 AMJ              2
 ZMJ              1
+ZRD30X           2.152395033230164
+ZRD29X           3731.0
 
 !*************** Te **********************************
 NAMEXP TEX POINTS 10 GRIDTYPE 19
