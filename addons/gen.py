@@ -17,7 +17,9 @@ def default_options():
     'IPL'   : 0.358,
     'UPDWN' : 0,
     'AMJ'   : 2,
-    'ZMJ'   : 1
+    'ZMJ'   : 1,
+    'ZRD30X': 1.8,
+    'ZRD29X': 4
 }
 def read_shot(p):
     shot = pd.read_csv(p,delim_whitespace=True, header=None, names= ['x', 'Te', 'Ne'] )
@@ -59,11 +61,13 @@ def make_exp_file(shot, time, options, shot_fname):
         f.writelines(f'{s}\n' for s in lines)
     
 
-df = pd.read_csv('shots_db.csv')
-df = df.rename(columns={"shot#": "shot", 'Ip': 'IPL', "Bt": "BTOR",'a':'ABC', 'R':'RTOR', 'tria': 'TRICH', 'elon': 'ELONM'})  
+df = pd.read_csv('database_3.csv')
+df = df.rename(columns={"shot#": "shot", 'Ip': 'IPL', "Bt": "BTOR",'a':'ABC', 'R':'RTOR', 'tria': 'TRICH', 'elon': 'ELONM',
+                        'Zeff': 'ZRD30X',
+                        'Ti0': 'ZRD29X'})  
 df['ABC']  = df['ABC'].map(lambda x: round(x/100,5))
 df['RTOR'] = df['RTOR'].map(lambda x: round(x/100,5))
-
+print(df)
 
 #for indx in range(0,20):
 for indx, row in df.iterrows():
