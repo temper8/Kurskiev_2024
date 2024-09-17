@@ -3,7 +3,7 @@ TAUMAX = 5.e-5;
 TSTART = 0.02
 TEND = 0.400;
 !TPAUSE = 0.3550;
-TPAUSE = 0.300;
+!TPAUSE = 0.300;
 TINIT = 0.025;
 TSCALE = 0.05;
 
@@ -52,7 +52,7 @@ TEB=0.03;
 !!=========Ion temperature============
 TI:AS;
 !TI = TEX;
-TI = TEX*ZRD29X/TEX(0);
+TI = TEX*ZRD29X/TEX(0)/1000.0;
 TIB = 0.03;
 CAR1="work(j,165)";
 
@@ -133,6 +133,8 @@ Wtot_WEB*1000+WIB*1000;
 q95_1/MU(ABC*0.95);
 
 !qB_1/MUB_5;
+
+
 
 
 
