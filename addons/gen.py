@@ -21,9 +21,20 @@ def default_options():
     'ZRD30X': 1.8,
     'ZRD29X': 4
 }
+drop_count = 0 
+drop_list = []
 def read_shot(p):
-    shot = pd.read_csv(p,delim_whitespace=True, header=None, names= ['x', 'Te', 'Ne'] )
+    global drop_count
+    global drop_list
+    df = pd.read_csv(p,delim_whitespace=True, header=None, names= ['x', 'Te', 'Ne'] )
+    N0 = df.shape[0]
+    shot= df.dropna()
     N = shot.shape[0]
+    if N<N0:
+        print(f'dropn {N0-N} rows')
+        drop_count = drop_count + 1
+        drop_list.append(p.name)
+
 
     x = " ".join([f'{i:<8.4f}' for i in shot['x']])
     Te = " ".join([f'{i/1000:<8.4f}' for i in shot['Te']])
@@ -50,7 +61,7 @@ def make_exp_file(shot, time, options, shot_fname):
     for key, v in options.items():
         lines.append(f'{key:<15}  {v}')
 
-    shot_path= Path('shots').joinpath(Path(shot_fname).name)
+    shot_path= Path('shots_4').joinpath(Path(shot_fname).name)
 
     print(shot_path)
     if shot_path.exists():
@@ -61,19 +72,24 @@ def make_exp_file(shot, time, options, shot_fname):
         f.writelines(f'{s}\n' for s in lines)
     
 
-df = pd.read_csv('database_3.csv')
+df = pd.read_csv('database_4.csv')
 df = df.rename(columns={"shot#": "shot", 'Ip': 'IPL', "Bt": "BTOR",'a':'ABC', 'R':'RTOR', 'tria': 'TRICH', 'elon': 'ELONM',
                         'Zeff': 'ZRD30X',
                         'Ti0': 'ZRD29X'})  
 df['ABC']  = df['ABC'].map(lambda x: round(x/100,5))
 df['RTOR'] = df['RTOR'].map(lambda x: round(x/100,5))
+df['IPL'] = df['IPL'].map(lambda x: round(x/1000,5))
 print(df)
 
-#for indx in range(0,20):
+#for indx in range(0,20):ls
 for indx, row in df.iterrows():
-    if indx > 10: break
+    if indx > 100: break
     opt = default_options()
     for key, v in opt.items():
         if key in row:
             opt[key] = row[key]
     make_exp_file(int(row['shot']), round(row['time'],5), opt, row['fname'])
+
+print(drop_list)
+print(f"num rows = {indx}")
+print(f"drop_count = {drop_count}")
