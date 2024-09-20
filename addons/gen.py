@@ -57,21 +57,39 @@ def convert_to_exp(shot):
     lines.append(Ne)
     return lines 
 
-def make_exp_file(shot, time, options, shot_fname):
+def df_to_dict(df) -> dict:
+    d = df.to_dict('split')
+    out = {}
+    for key in d['columns']:
+        out[key]= []
+    for data in d['data']:        
+        for key, v in zip(d['columns'], data):
+            out[key].append(v)
+    return out
+
+def make_exp_file(task):
+    #(shot, time, options, shot_fname):
+    #int(row['shot']), round(row['time'],5), opt, row['fname']
     lines = []
-    lines.append(f'#{shot} {time}')
+    lines.append(f'#{task["shot_index"]} {task["time"]}')
     lines.append(f' ')
-    for key, v in options.items():
+    for key, v in task['options'].items():
         lines.append(f'{key:<15}  {v}')
 
-    shot_path= Path('shots_4').joinpath(Path(shot_fname).name)
+    shot_path= Path('shots_4').joinpath(task["source_file"])
 
     print(shot_path)
     if shot_path.exists():
         shot_df, N_nan = read_shot(shot_path)
+        task['N_nan'] = N_nan
         lines += convert_to_exp(shot_df)
+        task['error'] ='ok'
+        task['shot_data'] = df_to_dict(shot_df)
+        #task['shot_data'] = shot_df.to_dict('tight')
+    else:
+        task['error'] = 'source_file not exists'
 
-    fn = f'exp\{shot}_{time*10000:4.0f}.exp'
+    fn = f'exp\{task["exp_file"]}'
     with open(fn, 'w') as f:
         f.writelines(f'{s}\n' for s in lines)
     
@@ -88,7 +106,7 @@ print(df)
 #for indx in range(0,20):ls
 task_dict = {}
 for indx, row in df.iterrows():
-    if indx > 3: break
+    #if indx > 2: break
     opt = default_options()
     for key, v in opt.items():
         if key in row:
@@ -104,7 +122,7 @@ for indx, row in df.iterrows():
         'exp_file' :  f'{shot_index}_{time*10000:4.0f}.exp',
         'options': opt
         }            
-    make_exp_file(int(row['shot']), round(row['time'],5), opt, row['fname'])
+    make_exp_file(task)
     
     task_dict[f'{shot_index}_{time*10000:4.0f}'] = task
     
