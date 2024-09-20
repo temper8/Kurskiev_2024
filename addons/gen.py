@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 from pathlib import Path
 print('Генератор exp файлов')
@@ -34,8 +35,10 @@ def read_shot(p):
         print(f'dropn {N0-N} rows')
         drop_count = drop_count + 1
         drop_list.append(p.name)
+    return shot, N0-N
 
-
+def convert_to_exp(shot):
+    N = shot.shape[0]
     x = " ".join([f'{i:<8.4f}' for i in shot['x']])
     Te = " ".join([f'{i/1000:<8.4f}' for i in shot['Te']])
     Ne = " ".join([f'{i/1e19:<8.4f}' for i in shot['Ne']])
@@ -65,7 +68,8 @@ def make_exp_file(shot, time, options, shot_fname):
 
     print(shot_path)
     if shot_path.exists():
-        lines += read_shot(shot_path)
+        shot_df, N_nan = read_shot(shot_path)
+        lines += convert_to_exp(shot_df)
 
     fn = f'exp\{shot}_{time*10000:4.0f}.exp'
     with open(fn, 'w') as f:
@@ -82,13 +86,31 @@ df['IPL'] = df['IPL'].map(lambda x: round(x/1000,5))
 print(df)
 
 #for indx in range(0,20):ls
+task_dict = {}
 for indx, row in df.iterrows():
-    if indx > 100: break
+    if indx > 3: break
     opt = default_options()
     for key, v in opt.items():
         if key in row:
             opt[key] = row[key]
+    shot_index = int(row['shot'])            
+    time= round(row['time'],5)    
+    task = {
+        'task_index': indx, 
+        'shot_index': shot_index, 
+        'time' : time,
+        'time_original' : row['time'],
+        'source_file': Path(row['fname']).name,
+        'exp_file' :  f'{shot_index}_{time*10000:4.0f}.exp',
+        'options': opt
+        }            
     make_exp_file(int(row['shot']), round(row['time'],5), opt, row['fname'])
+    
+    task_dict[f'{shot_index}_{time*10000:4.0f}'] = task
+    
+
+with open('task_dict.json', 'w') as f: 
+    json.dump(task_dict, f, indent=4)
 
 print(drop_list)
 print(f"num rows = {indx}")
