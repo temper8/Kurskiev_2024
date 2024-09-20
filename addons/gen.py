@@ -39,9 +39,9 @@ def read_shot(p):
 
 def convert_to_exp(shot):
     N = shot.shape[0]
-    x = " ".join([f'{i:<8.4f}' for i in shot['x']])
-    Te = " ".join([f'{i/1000:<8.4f}' for i in shot['Te']])
-    Ne = " ".join([f'{i/1e19:<8.4f}' for i in shot['Ne']])
+    x = " ".join([f'{v:<8.4f}' for v in shot['x']])
+    Te = " ".join([f'{v:<8.4f}' for v in shot['Te']])
+    Ne = " ".join([f'{v:<8.4f}' for v in shot['Ne']])
     lines = ['']
     lines.append('!*************** Te **********************************')
     lines.append(f'NAMEXP TEX POINTS {N} GRIDTYPE 19')
@@ -81,6 +81,8 @@ def make_exp_file(task):
     print(shot_path)
     if shot_path.exists():
         shot_df, N_nan = read_shot(shot_path)
+        shot_df['Te'] = shot_df['Te']/1000
+        shot_df['Ne'] = shot_df['Ne']/1e19
         task['N_nan'] = N_nan
         lines += convert_to_exp(shot_df)
         task['error'] ='ok'
@@ -114,7 +116,7 @@ for indx, row in df.iterrows():
     shot_index = int(row['shot'])            
     time= round(row['time'],5)    
     task = {
-        'task_index': indx, 
+        'database_index': indx, 
         'shot_index': shot_index, 
         'time' : time,
         'time_original' : row['time'],
