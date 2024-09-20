@@ -159,3 +159,6 @@ doc/html/
 *.dir
 *.bak
 *.zip
+
+*.txt
+exp/4*.exp
